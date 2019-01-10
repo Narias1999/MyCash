@@ -1,5 +1,12 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text, View, TextInput } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button
+} from "react-native";
 import Colors from "./../constants/Colors";
 import { MonoText } from "../components/StyledText";
 import Radio from "./../components/Radios";
@@ -52,6 +59,23 @@ export default class HomeScreen extends React.Component {
               onPress={this.onPress}
             />
           </View>
+          <View style={styles.fromField}>
+            <TextInput
+              style={styles.input}
+              placeholder="Cash quantity"
+              keyboardType="number-pad"
+            />
+          </View>
+          <View style={styles.fromField}>
+            <TextInput
+              style={styles.input}
+              placeholder="Description"
+              keyboardType="default"
+            />
+          </View>
+          <View style={styles.fromField}>
+            <Button title="Register" color={tintColor} onPress={this.onPress} />
+          </View>
         </ScrollView>
       </View>
     );
@@ -69,6 +93,15 @@ const styles = StyleSheet.create({
   },
   fromField: {
     paddingVertical: 15
+  },
+  input: {
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    fontSize: 17,
+    borderWidth: 1,
+    borderRadius: 2,
+    borderColor: "#EDE3D0",
+    color: primaryText
   },
   header: {
     color: primaryText,
