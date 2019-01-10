@@ -1,13 +1,31 @@
 import React from "react";
 import { ScrollView, StyleSheet, Text, View, TextInput } from "react-native";
-import { WebBrowser } from "expo";
-
+import Colors from "./../constants/Colors";
 import { MonoText } from "../components/StyledText";
+import Radio from "./../components/Radios";
+
+const { tintColor, primaryText } = Colors;
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      transferenceOptions: [
+        { label: "Spend", value: "spend" },
+        { label: "Recieve", value: "recieve" }
+      ],
+      selectedTransferenceType: 0
+    };
+  }
+
+  onPress = index =>
+    this.setState({
+      selectedTransferenceType: index
+    });
 
   render() {
     return (
@@ -27,8 +45,13 @@ export default class HomeScreen extends React.Component {
           contentContainerStyle={styles.contentContainer}
         >
           <Text style={styles.header}>Make a movement</Text>
-          <TextInput placeholder="" />
-          <View style={styles.getStartedContainer} />
+          <View style={styles.fromField}>
+            <Radio
+              elements={this.state.transferenceOptions}
+              selected={this.state.selectedTransferenceType}
+              onPress={this.onPress}
+            />
+          </View>
         </ScrollView>
       </View>
     );
@@ -44,10 +67,14 @@ const styles = StyleSheet.create({
     paddingTop: 230,
     paddingHorizontal: 25
   },
+  fromField: {
+    paddingVertical: 15
+  },
   header: {
-    color: "#393E46",
+    color: primaryText,
     fontWeight: "bold",
-    fontSize: 22
+    fontSize: 22,
+    paddingBottom: 5
   },
   codeHighlightText: {
     color: "#FFF4E0",
@@ -61,7 +88,7 @@ const styles = StyleSheet.create({
     right: 0,
     elevation: 20,
     alignItems: "center",
-    backgroundColor: "#00ADB5",
+    backgroundColor: tintColor,
     paddingTop: 60,
     paddingBottom: 50
   },
@@ -74,19 +101,5 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: "#FFF4E0",
     textAlign: "center"
-  },
-  navigationFilename: {
-    marginTop: 5
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: "center"
-  },
-  helpLink: {
-    paddingVertical: 15
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: "#2e78b7"
   }
 });
