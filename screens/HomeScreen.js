@@ -44,7 +44,7 @@ export default class HomeScreen extends React.Component {
           <View
             style={[styles.codeHighlightContainer, styles.navigationFilename]}
           >
-            <MonoText style={styles.codeHighlightText}>$ 1'200.000</MonoText>
+            <MonoText style={styles.codeHighlightText}>$ 1'300.000</MonoText>
           </View>
         </View>
         <ScrollView
