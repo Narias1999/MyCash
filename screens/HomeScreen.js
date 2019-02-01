@@ -71,6 +71,8 @@ export default class HomeScreen extends React.Component {
               style={styles.input}
               placeholder="Description"
               keyboardType="default"
+              multiline={true}
+              numberOfLines={3}
             />
           </View>
           <View style={styles.fromField}>

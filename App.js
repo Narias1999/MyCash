@@ -1,16 +1,24 @@
-import React from "react";
+import React, { Component } from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
 import { AppLoading, Asset, Font, Icon } from "expo";
 import AppNavigator from "./navigation/AppNavigator";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/lib/integration/react";
+import redux from "./redux/store/index";
 
-export default class App extends React.Component {
+const { store, persistor } = redux();
+
+console.log(store, persistor);
+
+export default class App extends Component {
   state = {
     isLoadingComplete: false
   };
 
   render() {
+    let MainComponent;
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
-      return (
+      MainComponent = () => (
         <AppLoading
           startAsync={this._loadResourcesAsync}
           onError={this._handleLoadingError}
@@ -18,7 +26,7 @@ export default class App extends React.Component {
         />
       );
     } else {
-      return (
+      MainComponent = () => (
         <View style={styles.container}>
           <StatusBar
             barStyle="light-content"
@@ -29,6 +37,13 @@ export default class App extends React.Component {
         </View>
       );
     }
+    return (
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <MainComponent />
+        </PersistGate>
+      </Provider>
+    );
   }
 
   _loadResourcesAsync = async () => {
