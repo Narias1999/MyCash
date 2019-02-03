@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet, View, Text, Image } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import Colors from "./../constants/Colors";
 import Invest from "./../components/Invest";
 const { tintColor } = Colors;

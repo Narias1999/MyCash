@@ -1,19 +1,22 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   ScrollView,
   StyleSheet,
   Text,
   View,
   TextInput,
-  Button
+  Button,
+  Picker
 } from "react-native";
 import Colors from "./../constants/Colors";
 import { MonoText } from "../components/StyledText";
 import Radio from "./../components/Radios";
+import MaskedInput from "./../components/MaskedInput";
+import { connect } from "react-redux";
 
 const { tintColor, primaryText } = Colors;
 
-export default class HomeScreen extends React.Component {
+class HomeScreen extends Component {
   static navigationOptions = {
     header: null
   };
@@ -25,14 +28,47 @@ export default class HomeScreen extends React.Component {
         { label: "Spend", value: "spend" },
         { label: "Recieve", value: "recieve" }
       ],
-      selectedTransferenceType: 0
+      recieveCategories: [
+        "Category...",
+        "Salary Payment",
+        "Freelance work",
+        "Sold"
+      ],
+      spendCategories: [
+        "Category...",
+        "House rent",
+        "Public services",
+        "Food",
+        "Personal care",
+        "House and clothes cleaning",
+        "Clothes",
+        "Travels",
+        "Gadgets",
+        "Education",
+        "Online subscriotions",
+        "Home appliances",
+        "Debts Payment"
+      ],
+      selectedTransferenceType: 0,
+      categories: [],
+      selectedCategory: ""
     };
   }
 
-  onPress = index =>
+  componentDidMount() {
+    const baseCategories = this.state.spendCategories;
     this.setState({
-      selectedTransferenceType: index
+      categories: baseCategories
     });
+  }
+
+  onPress = index => {
+    const { recieveCategories, spendCategories } = this.state;
+    this.setState({
+      selectedTransferenceType: index,
+      categories: index ? recieveCategories : spendCategories
+    });
+  };
 
   render() {
     return (
@@ -60,7 +96,7 @@ export default class HomeScreen extends React.Component {
             />
           </View>
           <View style={styles.fromField}>
-            <TextInput
+            <MaskedInput
               style={styles.input}
               placeholder="Cash quantity"
               keyboardType="number-pad"
@@ -76,6 +112,35 @@ export default class HomeScreen extends React.Component {
             />
           </View>
           <View style={styles.fromField}>
+            <View
+              style={{
+                borderWidth: 1,
+                borderRadius: 2,
+                borderColor: "#EDE3D0"
+              }}
+            >
+              <Picker
+                selectedValue={this.state.selectedCategory}
+                style={{
+                  height: 50,
+                  width: "100%",
+                  color: primaryText
+                }}
+                onValueChange={(itemValue, itemIndex) =>
+                  this.setState({ selectedCategory: itemValue })
+                }
+              >
+                {this.state.categories.map(category => (
+                  <Picker.Item
+                    label={category}
+                    value={category}
+                    key={category}
+                  />
+                ))}
+              </Picker>
+            </View>
+          </View>
+          <View style={styles.fromField}>
             <Button title="Register" color={tintColor} onPress={this.onPress} />
           </View>
         </ScrollView>
@@ -83,6 +148,16 @@ export default class HomeScreen extends React.Component {
     );
   }
 }
+
+function mapStateToProps(store, props) {
+  // console.log(store, props);
+  return {
+    ...props,
+    ...store.invests
+  };
+}
+
+export default connect(mapStateToProps)(HomeScreen);
 
 const styles = StyleSheet.create({
   container: {
